@@ -29,7 +29,16 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    '@nuxtjs/axios'
   ],
+
+  axios: {
+    proxy: true
+  },
+
+  proxy: {
+    '/api/': 'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0',
+  }
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
