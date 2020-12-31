@@ -38,7 +38,7 @@ export default {
 
   proxy: {
     '/api/': 'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0',
-  }
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
