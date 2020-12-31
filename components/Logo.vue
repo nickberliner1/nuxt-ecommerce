@@ -52,7 +52,7 @@
 .logo {
   animation: 3s appear;
   /* margin: auto; */
-  padding-top: 0px;
+  padding-top: 20px;
   
 }
 

@@ -3,13 +3,39 @@
     <div>
       <Navbar />
     </div>
+    
+    <p v-if="$fetchState.pending">Loading products...</p>
+  <p v-else-if="$fetchState.error">An error occurred :(</p>
+  <div v-else>
+    <h1>Venues</h1>
+    <ul>
+      <li v-bind:key="venue.id" v-for="venue of venues">
+        {{ venue.title }}
+        <img :src="venue.cover_image_url" class="product-image" />
+      </li>
+    </ul>
+    <button @click="$fetch">Refresh</button>
+  </div>
+
 
   </div>
 </template>
 
 <script>
-export default {}
+  export default {
+    data() {
+      return {
+        venues: []
+      }
+    },
+    async fetch() {
+      this.venues = await fetch(
+        'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0'
+      ).then(res => res.json())
+    }
+  }
 </script>
+
 
 <style>
 .container {
@@ -49,5 +75,11 @@ export default {}
 
 .links {
   padding-top: 15px;
+}
+
+.product-image {
+  max-width: 30%;
+  max-height: 30%;
+  border-radius: 15px;
 }
 </style>
