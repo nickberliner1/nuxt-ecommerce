@@ -1,11 +1,9 @@
 <template>
-    <div>
-        <div class="logo">
-            <Logo />
-        </div>
-        <div>
-            <GoToCartButton />
-        </div>
+    <div class="navbar-container">
+        
+        <Logo />    
+        <GoToCartButton />
+        
     </div>
 </template>
 
@@ -16,7 +14,9 @@ export default {
 </script>
 
 <style scoped>
-    .logo {
-        float: left;
+    .navbar-container {
+        min-height: 100px;
+        display: flex;
+        justify-content: space-between;
     }
 </style>
