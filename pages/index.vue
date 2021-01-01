@@ -9,7 +9,7 @@
 
     <div v-else>
       <h1>Events</h1>
-      <ul class="product-list">
+      <!-- <ul class="product-list">
         <li v-bind:key="event.id" v-for="event of events" class="product-item">
           
           <img :src="event.cover_image_url" class="product-image" />
@@ -17,12 +17,19 @@
           <div class="product-body">
             <h2 class="product-title">{{ event.title }}</h2>
             <p class="product-description">{{ event.description }}</p>
-            <p class="product-price">Price: {{ event.retail_price.formatted_value }}</p>
-            <!-- <fa :icon="['fas', 'dollar-sign']" /> -->
-            <button style="color: blue;">Add to car<i class="fab fa-accessible-icon"></i></button>
+            <div class="product-footer">
+              <p class="product-price">Price: {{ event.retail_price.formatted_value }}</p>
+              <button style="color: blue;" @click="$emit('add-to-cart', event)">Add to cart</button>
+            </div>
           </div>
         </li>
-      </ul>
+      </ul> -->
+      <Event />
+      <Cart 
+        v-on:pay="pay()" 
+        v-on:remove-from-cart="removeFromCart($event)"
+        :events="cart"
+      />
       <button @click="$fetch">Refresh</button>
     </div>
 
@@ -31,18 +38,45 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        events: []
-      }
+import Cart from '../components/Cart.vue';
+import Event from '../components/Event.vue';
+
+export default {
+  components: { Cart },
+  data() {
+    return {
+      events: [],
+      cart: []
+    }
+  },
+  async fetch() {
+    this.events = await fetch(
+      'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
+    ).then(res => res.json())
+  },
+
+  methods: {
+
+    addToCart(event) {
+      this.cart.push(event);
     },
-    async fetch() {
-      this.events = await fetch(
-        'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
-      ).then(res => res.json())
+
+    isInCart(event) {
+      const item = this.cart.find(item => item.id === event.id);
+      if (item) {
+        return true;
+      }
+      return false;
+    },
+    removeFromCart(event) {
+      this.cart = this.cart.filter(item => item.id !== event.id);
+    },
+    pay() {
+      this.cart = [];
+      alert("Thanks! Shopping successfully completed. ");
     }
   }
+}
 </script>
 
 
@@ -89,5 +123,8 @@ ul, li {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.151);
 }
 
+.product-footer {
+  display: flex-end;
+}
 
 </style>
