@@ -11,9 +11,16 @@
       <h1>Events</h1>
       <ul class="product-list">
         <li v-bind:key="event.id" v-for="event of events" class="product-item">
-          {{ event.title }}
+          
           <img :src="event.cover_image_url" class="product-image" />
-          <p>{{ event.retail_price.formatted_value }}</p>
+          
+          <div class="product-body">
+            <h2 class="product-title">{{ event.title }}</h2>
+            <p class="product-description">{{ event.description }}</p>
+            <p class="product-price">Price: {{ event.retail_price.formatted_value }}</p>
+            <!-- <fa :icon="['fas', 'dollar-sign']" /> -->
+            <button style="color: blue;">Add to car<i class="fab fa-accessible-icon"></i></button>
+          </div>
         </li>
       </ul>
       <button @click="$fetch">Refresh</button>
@@ -40,8 +47,18 @@
 
 
 <style lang="scss">
+
 ul, li {
   list-style-type: none;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.product-image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .container {
@@ -56,25 +73,21 @@ ul, li {
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   padding-right: 5vw;
   padding-left: 5vw;
+
 }
 
 .product-list > .product-item {
-    flex: 1 1 40%; /*grow | shrink | basis */
-    height: 100px;
+    flex: 1 1 30%; /*grow | shrink | basis */
+    padding: 20px;
+    margin: 20px;
+    border: 2px solid gray;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.151);
 }
 
-.product-item {
-  border: 3px solid green;
-  margin: 10px;
-}
 
-.product-image {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 15px;
-}
 </style>
