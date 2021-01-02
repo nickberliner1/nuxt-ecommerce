@@ -25,7 +25,7 @@ export default {
     props: ["items"],
     computed: {
         total() {
-            return this.items.reduce((i, item) => i + Number(item.retail_price.formatted_value), 0);
+            return this.items.reduce((i, item) => i + Number(item.retail_price.value), 0);
         }
     }
 }
