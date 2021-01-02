@@ -1,9 +1,9 @@
 <template>
     <div>
         <ul>
-            <li v-for="event in events" :key="event.id">
-                {{ event.title }} - {{ event.retail_price.formatted_value }}
-                <button @click="$emit('remove-from-cart',event)">
+            <li v-for="item in items" v-bind:key="item.id">
+                {{ item.title }} - {{ item.retail_price.formatted_value }}
+                <button @click="$emit('remove-from-cart',item)">
                 Remove
                 </button>
             </li>
@@ -16,10 +16,11 @@
 
 <script>
 export default {
-    props: ["events"],
+    
+    props: ["items"],
     computed: {
         total() {
-            return this.events.reduce((i, event) => i + Number(event.retail_price.formatted_value), 0);
+            return this.items.reduce((i, item) => i + Number(item.retail_price.formatted_value), 0);
         }
     }
 }

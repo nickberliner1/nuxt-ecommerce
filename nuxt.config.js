@@ -34,11 +34,16 @@ export default {
   ],
 
   axios: {
-    proxy: true
+    proxy: true,
+    
+      // See https://github.com/nuxt-community/axios-module#options
+      // baseURL: process.env.API_URL,
+      // baseURL: 'https://api.musement.com/api/v3/venues/164',
+    
   },
 
   proxy: {
-    '/api/': 'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0',
+    '/api/': process.env.API_URL,
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)

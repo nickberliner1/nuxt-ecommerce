@@ -3,32 +3,19 @@
     <div>
       <Navbar />
     </div>
-    
-    <p v-if="$fetchState.pending">Loading events...</p>
-    <p v-else-if="$fetchState.error">An error occurred :(</p>
-
-    <div v-else>
+<!-- :isInCart="isInCart(product)" -->
+    <div>
       <h1>Events</h1>
-      <!-- <ul class="product-list">
-        <li v-bind:key="event.id" v-for="event of events" class="product-item">
-          
-          <img :src="event.cover_image_url" class="product-image" />
-          
-          <div class="product-body">
-            <h2 class="product-title">{{ event.title }}</h2>
-            <p class="product-description">{{ event.description }}</p>
-            <div class="product-footer">
-              <p class="product-price">Price: {{ event.retail_price.formatted_value }}</p>
-              <button style="color: blue;" @click="$emit('add-to-cart', event)">Add to cart</button>
-            </div>
-          </div>
-        </li>
-      </ul> -->
-      <Event />
+      
+      <Event
+        
+        v-on:add-to-cart="addToCart(event)"
+        :event="event"
+      />
       <Cart 
         v-on:pay="pay()" 
         v-on:remove-from-cart="removeFromCart($event)"
-        :events="cart"
+        :items="cart"
       />
       <button @click="$fetch">Refresh</button>
     </div>
@@ -42,17 +29,12 @@ import Cart from '../components/Cart.vue';
 import Event from '../components/Event.vue';
 
 export default {
-  components: { Cart },
+  components: { Event, Cart },
   data() {
     return {
       events: [],
       cart: []
     }
-  },
-  async fetch() {
-    this.events = await fetch(
-      'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
-    ).then(res => res.json())
   },
 
   methods: {
@@ -61,20 +43,27 @@ export default {
       this.cart.push(event);
     },
 
-    isInCart(event) {
-      const item = this.cart.find(item => item.id === event.id);
-      if (item) {
-        return true;
-      }
-      return false;
-    },
+    // isInCart(event) {
+    //   const item = this.cart.find(item => item.id === event.id);
+    //   if (item) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
     removeFromCart(event) {
       this.cart = this.cart.filter(item => item.id !== event.id);
     },
-    pay() {
-      this.cart = [];
-      alert("Thanks! Shopping successfully completed. ");
-    }
+
+
+        async getEvents() {
+            let res = await this.$store.dispatch("getEvents");
+            this.events = res.data.data.events;
+        },
+
+        mounted() {
+            this.getEvents();
+        }
+   
   }
 }
 </script>
