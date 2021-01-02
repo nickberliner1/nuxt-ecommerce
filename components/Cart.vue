@@ -11,6 +11,11 @@
         <div>
             <h5>{{ total }}</h5>
         </div>
+        <button
+            :disabled="items.length === 0"
+            @click="$emit('pay')"
+            class="btn btn-info form-control"
+        >Pay Now</button>
     </div>
 </template>
 

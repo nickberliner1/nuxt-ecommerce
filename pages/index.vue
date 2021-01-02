@@ -3,20 +3,24 @@
     <div>
       <Navbar />
     </div>
-<!-- :isInCart="isInCart(product)" -->
     <div>
       <h1>Events</h1>
-      
-      <Event
-        
-        v-on:add-to-cart="addToCart(event)"
-        :event="event"
-      />
-      <Cart 
+
+      <p v-if="$fetchState.pending">Loading events...</p>
+      <p v-else-if="$fetchState.error">An error occurred :(</p>
+
+      <div v-else :key="event.id" v-for="event in events">
+        <Event
+          :isInCart="isInCart(event)"
+          v-on:add-to-cart="addToCart(event)"
+          :event="event"
+        />
+      </div>
+      <cart 
         v-on:pay="pay()" 
         v-on:remove-from-cart="removeFromCart($event)"
         :items="cart"
-      />
+      ></cart>
       <button @click="$fetch">Refresh</button>
     </div>
 
@@ -29,12 +33,21 @@ import Cart from '../components/Cart.vue';
 import Event from '../components/Event.vue';
 
 export default {
-  components: { Event, Cart },
+  components: { 
+    Event, 
+    Cart 
+  },
   data() {
     return {
       events: [],
       cart: []
     }
+  },
+  async fetch() {
+    this.events = await fetch(
+      'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
+    ).then(res => res.json());
+
   },
 
   methods: {
@@ -43,26 +56,31 @@ export default {
       this.cart.push(event);
     },
 
-    // isInCart(event) {
-    //   const item = this.cart.find(item => item.id === event.id);
-    //   if (item) {
-    //     return true;
-    //   }
-    //   return false;
-    // },
+    isInCart(event) {
+      const item = this.cart.find(item => item.id === event.id);
+      if (item) {
+        return true;
+      }
+      return false;
+    },
     removeFromCart(event) {
       this.cart = this.cart.filter(item => item.id !== event.id);
     },
 
+    pay() {
+      this.cart = [];
+      alert("Thanks! Shopping successfully completed. ");
+    }
 
-        async getEvents() {
-            let res = await this.$store.dispatch("getEvents");
-            this.events = res.data.data.events;
-        },
 
-        mounted() {
-            this.getEvents();
-        }
+        // async getEvents() {
+        //     let res = await this.$store.dispatch("getEvents");
+        //     this.events = res.data.data.events;
+        // },
+
+        // mounted() {
+        //     this.getEvents();
+        // }
    
   }
 }

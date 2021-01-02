@@ -2,7 +2,6 @@
     <div class="navbar-container">
         
         <Logo />    
-        <GoToCartButton />
         
     </div>
 </template>
