@@ -1,15 +1,29 @@
 <template>
+
+
   <div class="container">
-    <div>
-      <Navbar />
+    <div class="header">
+        <logo>
+        </logo>
+        <cart 
+          v-on:pay="pay()" 
+          v-on:remove-from-cart="removeFromCart(event)"
+          :items="cart"
+        ></cart>
+      
     </div>
     <div class="main-body">
-      <h1>Events</h1>
-
+      
       <p v-if="$fetchState.pending">Loading events...</p>
       <p v-else-if="$fetchState.error">An error occurred :(</p>
 
       <div v-else class="products">
+
+      <div>
+        <h1>Events</h1>
+        <button @click="$fetch">Refresh</button>
+      </div>
+
         <ul class="product-list">
           <li  :key="event.id" v-for="event in events" class="product-item">
             <event
@@ -20,13 +34,13 @@
           </li>
         </ul>
       </div>
-      
-      <cart 
-        v-on:pay="pay()" 
-        v-on:remove-from-cart="removeFromCart(event)"
-        :items="cart"
-      ></cart>
-      <button @click="$fetch">Refresh</button>
+      <div class="cart">
+        <!-- <cart 
+          v-on:pay="pay()" 
+          v-on:remove-from-cart="removeFromCart(event)"
+          :items="cart"
+        ></cart> -->
+      </div>
     </div>
 
 
@@ -34,18 +48,21 @@
 </template>
 
 <script>
+import Logo from '../components/Logo.vue';
 import Cart from '../components/Cart.vue';
 import Event from '../components/Event.vue';
 
 export default {
   components: { 
+    Logo,
     Event, 
     Cart 
   },
   data() {
     return {
       events: [],
-      cart: []
+      cart: [],
+      page: 1
     }
   },
   async fetch() {
@@ -100,29 +117,31 @@ ul, li {
   margin-top: 50px;
   margin-bottom: 50px;
 }
-/* 
-.main-body {
+
+// .main-body {
+//   display: flex;
+//   justify-content: space-evenly;
+// }
+.header {
+  min-height: 100px;
   display: flex;
-  direction: row;
-  flex-basis: inherit;
+  justify-content: space-between;
 }
 
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-*/
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  // align-items: stretch;
-  // justify-content: center;
   padding-right: 5vw;
   padding-left: 5vw;
 }  
+
+.product-image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 15px;
+}
 
 .product-item {
     display: flex;
@@ -135,12 +154,8 @@ ul, li {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.151);
 }
 
-.product-image {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 15px;
+.cart {
+
 }
 
 </style>
