@@ -20,9 +20,10 @@
           </li>
         </ul>
       </div>
+      
       <cart 
         v-on:pay="pay()" 
-        v-on:remove-from-cart="removeFromCart($event)"
+        v-on:remove-from-cart="removeFromCart(event)"
         :items="cart"
       ></cart>
       <button @click="$fetch">Refresh</button>
@@ -61,14 +62,15 @@ export default {
     },
 
     isInCart(event) {
-      const item = this.cart.find(item => item.id === event.id);
-      if (item) {
+      // const item = this.cart.find(item => item.id === event.id);
+      if (this.cart.includes(event)) {
         return true;
       }
       return false;
     },
-    removeFromCart(event) {
-      this.cart = this.cart.filter(item => item.id !== event.id);
+    removeFromCart(item) {
+      // this.cart = this.cart.filter(item => item.id !== event.id);
+      // this.cart.splice(index, 1);
     },
 
     pay() {
@@ -116,8 +118,8 @@ ul, li {
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  align-items: stretch;
-  justify-content: center;
+  // align-items: stretch;
+  // justify-content: center;
   padding-right: 5vw;
   padding-left: 5vw;
 }  

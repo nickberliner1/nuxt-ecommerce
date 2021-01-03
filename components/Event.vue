@@ -16,10 +16,11 @@
             <div class="product-footer">
               <p class="product-price">Price: {{ event.retail_price.formatted_value }}</p>
               <button 
-                
+                :disabled="isInCart"
                 @click="$emit('add-to-cart', event)"
               >
-                {{ isInCart ? 'Added' : 'Add to cart' }}
+              {{ isInCart ? 'Added' : 'Add to Cart' }}
+                <!-- Add to Cart -->
               </button>
             </div>
           </div>
