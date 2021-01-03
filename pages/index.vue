@@ -11,11 +11,21 @@
           :items="cart"
         ></cart>
       
+
+<section id="next" v-if="nextPage">
+  <nuxt-link to="/page/2">
+    Next page
+  </nuxt-link>
+</section>
+
+
     </div>
     <div class="main-body">
       
-      <p v-if="$fetchState.pending">Loading events...</p>
-      <p v-else-if="$fetchState.error">An error occurred :(</p>
+      <!-- <p v-if="$fetchState.pending">Loading events...</p>
+      <p v-else-if="$fetchState.error">An error occurred :(</p> -->
+      <p v-if="$axios.pending">Loading events...</p>
+      <p v-else-if="$axios.error">An error occurred :(</p>
 
       <div v-else class="products">
 
@@ -65,12 +75,29 @@ export default {
       page: 1
     }
   },
-  async fetch() {
-    this.events = await fetch(
-      'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
-    ).then(res => res.json());
+  
 
+  async asyncData({ $axios }) {
+    const events = await $axios.$get(`https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR`);
+
+    // const sixResults = await fetch()
+    //   .limit(6)
+    //   .fetch();
+
+    // const nextPage = sixResults.length === 6;
+    // const results = nextPage ? sixResults.slice(0, -1) : sixResults;
+    return { 
+      events,
+      cart: []
+    };
   },
+
+  // async fetch() {
+  //   this.events = await fetch(
+  //     'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
+  //   ).then(res => res.json());
+
+  // },
 
   methods: {
 
@@ -126,6 +153,7 @@ ul, li {
   min-height: 100px;
   display: flex;
   justify-content: space-between;
+  background-color: rgb(148, 148, 202);
 }
 
 .product-list {
