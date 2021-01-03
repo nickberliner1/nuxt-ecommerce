@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul>
-            <li v-for="item in items" v-bind:key="item.id">
+            <li v-for="item in items" :key="item.id">
                 {{ item.title }} - {{ item.retail_price.formatted_value }}
                 <button @click="$emit('remove-from-cart',item)">
                 Remove

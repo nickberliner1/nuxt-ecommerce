@@ -3,19 +3,21 @@
     <div>
       <Navbar />
     </div>
-    <div>
+    <div class="main-body">
       <h1>Events</h1>
 
       <p v-if="$fetchState.pending">Loading events...</p>
       <p v-else-if="$fetchState.error">An error occurred :(</p>
 
-      <div v-else :key="event.id" v-for="event in events">
+      <div v-else class="products">
         <ul class="product-list">
-          <Event
-            :isInCart="isInCart(event)"
-            v-on:add-to-cart="addToCart(event)"
-            :event="event"
-          />
+          <li  :key="event.id" v-for="event in events" class="product-item">
+            <event
+              :isInCart="isInCart(event)"
+              v-on:add-to-cart="addToCart(event)"
+              :event="event"
+            ></event>
+          </li>
         </ul>
       </div>
       <cart 
@@ -91,15 +93,26 @@ export default {
 
 <style lang="scss">
 
+ul, li {
+  list-style-type: none;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+/* 
+.main-body {
+  display: flex;
+  direction: row;
+  flex-basis: inherit;
+}
+
 .container {
-  /* margin: 0 auto; */
+  margin: 0 auto;
   min-height: 100vh;
-  /* display: flex; */
   justify-content: center;
   align-items: center;
   text-align: center;
 }
-
+*/
 .product-list {
   display: flex;
   flex-wrap: wrap;
@@ -107,7 +120,25 @@ export default {
   justify-content: center;
   padding-right: 5vw;
   padding-left: 5vw;
+}  
 
+.product-item {
+    display: flex;
+    
+    flex: 1 1 30%; /* grow | shrink | basis */
+    padding: 20px;
+    margin: 20px;
+    border: 2px solid gray;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.151);
+}
+
+.product-image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 15px;
 }
 
 </style>
