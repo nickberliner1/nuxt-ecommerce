@@ -22,7 +22,6 @@
 
 <script>
 export default {
-    
     props: ["items"],
     computed: {
         total() {

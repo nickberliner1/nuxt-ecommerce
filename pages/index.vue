@@ -11,13 +11,21 @@
           :items="cart"
         ></cart>
       
-
-<section id="next" v-if="nextPage">
+ <!-- <div :key="index" v-for="(event, index) in paginatedItems">
+            <b-pagination
+          @change="onPageChanged"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+          class="my-0"
+        />
+ </div> -->
+<!-- <section id="next" v-if="nextPage">
   <nuxt-link to="/page/2">
     Next page
   </nuxt-link>
-</section>
-
+</section> -->
+            
 
     </div>
     <div class="main-body">
@@ -34,8 +42,18 @@
         <button @click="$fetch">Refresh</button>
       </div>
 
+<div :key="index" v-for="(event, index) in paginatedItems">
+<b-pagination
+          @change="onPageChanged"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+          class="my-0"
+        />
+
         <ul class="product-list">
-          <li  :key="event.id" v-for="event in events" class="product-item">
+          <!-- <li :key="event.id" v-for="event in events" class="product-item"> -->
+          <li :key="event.id" class="product-item">
             <event
               :isInCart="isInCart(event)"
               v-on:add-to-cart="addToCart(event)"
@@ -52,7 +70,8 @@
         ></cart> -->
       </div>
     </div>
-
+    
+    </div>
 
   </div>
 </template>
@@ -72,34 +91,51 @@ export default {
     return {
       events: [],
       cart: [],
-      page: 1
+      currentPage: 1,
+      perPage: 2,
+      totalRows: 10,
+      paginatedItems: this.events
     }
   },
-  
 
-  async asyncData({ $axios }) {
-    const events = await $axios.$get(`https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR`);
+  // async asyncData({ $axios }) {
+  //   const events = await $axios.$get(`https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR`);
 
-    // const sixResults = await fetch()
-    //   .limit(6)
-    //   .fetch();
+  //   // const sixResults = await fetch()
+  //   //   .limit(6)
+  //   //   .fetch();
 
-    // const nextPage = sixResults.length === 6;
-    // const results = nextPage ? sixResults.slice(0, -1) : sixResults;
-    return { 
-      events,
-      cart: []
-    };
-  },
-
-  // async fetch() {
-  //   this.events = await fetch(
-  //     'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
-  //   ).then(res => res.json());
-
+  //   // const nextPage = sixResults.length === 6;
+  //   // const results = nextPage ? sixResults.slice(0, -1) : sixResults;
+  //   return { events, cart: [] };
   // },
 
+  async fetch() {
+    this.events = await fetch(
+      'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
+    ).then(res => res.json());
+
+  },
+
   methods: {
+
+paginate(page_size, page_number) {
+      let itemsToParse = this.events;
+      this.paginatedItems = itemsToParse.slice(
+        page_number * page_size,
+        (page_number + 1) * page_size
+      );
+    },
+    onPageChanged(page) {
+      this.paginate(this.perPage, page - 1);
+    },
+    
+    // itemsForList() {
+    //   return this.events.slice(
+    //     (this.currentPage - 1) * this.perPage,
+    //     this.currentPage * this.perPage,
+    //   );
+    // },
 
     addToCart(event) {
       this.cart.push(event);
@@ -132,7 +168,13 @@ export default {
         //     this.getEvents();
         // }
    
+  },
+
+  mounted() {
+    this.paginate(this.perPage, 0);
   }
+
+
 }
 </script>
 
