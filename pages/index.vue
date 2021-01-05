@@ -11,15 +11,7 @@
           :items="cart"
         ></cart>
       
- <!-- <div :key="index" v-for="(event, index) in paginatedItems">
-            <b-pagination
-          @change="onPageChanged"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          v-model="currentPage"
-          class="my-0"
-        />
- </div> -->
+ 
 <!-- <section id="next" v-if="nextPage">
   <nuxt-link to="/page/2">
     Next page
@@ -32,43 +24,33 @@
       
       <!-- <p v-if="$fetchState.pending">Loading events...</p>
       <p v-else-if="$fetchState.error">An error occurred :(</p> -->
-      <p v-if="$axios.pending">Loading events...</p>
-      <p v-else-if="$axios.error">An error occurred :(</p>
 
-      <div v-else class="products">
-
+      <!-- <div v-else class="products"> -->
+      <div class="products">
       <div>
         <h1>Events</h1>
-        <button @click="$fetch">Refresh</button>
+        <!-- <button @click="$fetch">Refresh</button> -->
       </div>
 
-<div :key="index" v-for="(event, index) in paginatedItems">
+<div :key="index" v-for="(event, index) in (events,paginatedItems)">
 <b-pagination
           @change="onPageChanged"
           :total-rows="totalRows"
           :per-page="perPage"
           v-model="currentPage"
-          class="my-0"
         />
 
-        <ul class="product-list">
-          <!-- <li :key="event.id" v-for="event in events" class="product-item"> -->
-          <li :key="event.id" class="product-item">
+        <!-- <ul class="product-list">
+          <li :key="event.id" v-for="event in events" class="product-item"> -->
             <event
               :isInCart="isInCart(event)"
               v-on:add-to-cart="addToCart(event)"
               :event="event"
             ></event>
-          </li>
-        </ul>
+          <!-- </li>
+        </ul> -->
       </div>
-      <div class="cart">
-        <!-- <cart 
-          v-on:pay="pay()" 
-          v-on:remove-from-cart="removeFromCart(event)"
-          :items="cart"
-        ></cart> -->
-      </div>
+      
     </div>
     
     </div>
@@ -92,7 +74,7 @@ export default {
       events: [],
       cart: [],
       currentPage: 1,
-      perPage: 2,
+      perPage: 1,
       totalRows: 10,
       paginatedItems: this.events
     }
@@ -112,23 +94,34 @@ export default {
 
   async fetch() {
     this.events = await fetch(
-      'https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR'
+      'https://api.musement.com/api/v3/venues/164/activities?&offset=0&currency=EUR'
     ).then(res => res.json());
 
   },
 
-  methods: {
 
-paginate(page_size, page_number) {
-      let itemsToParse = this.events;
-      this.paginatedItems = itemsToParse.slice(
-        page_number * page_size,
-        (page_number + 1) * page_size
-      );
-    },
-    onPageChanged(page) {
-      this.paginate(this.perPage, page - 1);
-    },
+  methods: {
+    paginate(page_size, page_number) {
+            let itemsToParse = this.events;
+            this.paginatedItems = itemsToParse.slice(
+                page_number * page_size,
+                (page_number + 1) * page_size
+            );
+        },
+        onPageChanged(page) {
+            this.paginate(this.perPage, page - 1);
+        },
+
+// paginate(page_size, page_number) {
+//       let itemsToParse = this.events;
+//       this.paginatedItems = itemsToParse.slice(
+//         page_number * page_size,
+//         (page_number + 1) * page_size
+//       );
+//     },
+//     onPageChanged(page) {
+//       this.paginate(this.perPage, page - 1);
+//     },
     
     // itemsForList() {
     //   return this.events.slice(

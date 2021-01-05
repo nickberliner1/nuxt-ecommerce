@@ -1,12 +1,23 @@
 <template>
     <div class="product">
 
+<!-- <div :key="index" v-for="(event, index) in paginatedItems">
+<b-pagination
+          @change="onPageChanged"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          v-model="currentPage"
+        /> -->
+
+
     <!-- <ul class="product-list"> -->
 
         <!-- <p v-if="$fetchState.pending">Loading events...</p>
         <p v-else-if="$fetchState.error">An error occurred :(</p> -->
 
         <!-- <li class="product-item"> -->
+            <ul class="product-list">
+          <li :key="event.id" v-for="event in events" class="product-item">
         
           <img :src="event.cover_image_url" class="product-image" />
           <h2 class="product-title">{{ event.title }}</h2>
@@ -24,14 +35,53 @@
               </button>
             </div>
           </div>
-        <!-- </li> -->
-      <!-- </ul> -->
+        </li> 
+      </ul>
       </div>
+    <!-- </div> -->
 </template>
 
 <script>
 export default {
     props: ['event', 'isInCart'],
+    data() {
+        return {
+            events: []
+        }
+    },
+    // data() {
+    //     return {
+    //         currentPage: 1,
+    //         perPage: 3,
+    //         totalRows: 10,
+    //         paginatedItems: this.events
+    //     }
+    // },
+    // methods: {
+
+    //     paginate(page_size, page_number) {
+    //         let itemsToParse = this.events;
+    //         this.paginatedItems = itemsToParse.slice(
+    //             page_number * page_size,
+    //             (page_number + 1) * page_size
+    //         );
+    //     },
+    //     onPageChanged(page) {
+    //         this.paginate(this.perPage, page - 1);
+    //     },
+    // },
+
+    // mounted() {
+    //     this.paginate(this.perPage, 0);
+    // }
+    
+    
+    async fetch() {
+    this.events = await fetch(
+      'https://api.musement.com/api/v3/venues/164/activities?&offset=0&currency=EUR'
+    ).then(res => res.json());
+
+  },
 }
 </script>
 

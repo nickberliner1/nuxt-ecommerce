@@ -3,7 +3,6 @@
         <ul>
             <li v-for="(item, index) in items" :key="item.id">
                 {{ item.title }} - {{ item.retail_price.formatted_value }}
-                <!-- <button @click="$emit('remove-from-cart',item)"> -->
                 <button @click="items.splice(index, 1)">
                 Remove
                 </button>
