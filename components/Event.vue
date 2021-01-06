@@ -16,8 +16,8 @@
         <p v-else-if="$fetchState.error">An error occurred :(</p> -->
 
         <!-- <li class="product-item"> -->
-            <ul class="product-list">
-          <li :key="event.id" v-for="event in events" class="product-item">
+            <!-- <ul class="product-list">
+          <li :key="event.id" v-for="event in events" class="product-item"> -->
         
           <img :src="event.cover_image_url" class="product-image" />
           <h2 class="product-title">{{ event.title }}</h2>
@@ -35,8 +35,8 @@
               </button>
             </div>
           </div>
-        </li> 
-      </ul>
+        <!-- </li> 
+      </ul> -->
       </div>
     <!-- </div> -->
 </template>
@@ -75,13 +75,6 @@ export default {
     //     this.paginate(this.perPage, 0);
     // }
     
-    
-    async fetch() {
-    this.events = await fetch(
-      'https://api.musement.com/api/v3/venues/164/activities?&offset=0&currency=EUR'
-    ).then(res => res.json());
-
-  },
 }
 </script>
 

@@ -10,51 +10,54 @@
           v-on:remove-from-cart="removeFromCart(event)"
           :items="cart"
         ></cart>
-      
- 
-<!-- <section id="next" v-if="nextPage">
-  <nuxt-link to="/page/2">
-    Next page
-  </nuxt-link>
-</section> -->
-            
-
     </div>
+
     <div class="main-body">
       
-      <!-- <p v-if="$fetchState.pending">Loading events...</p>
-      <p v-else-if="$fetchState.error">An error occurred :(</p> -->
+      <p v-if="$fetchState.pending">Loading events...</p>
+      <p v-else-if="$fetchState.error">An error occurred :(</p>
 
-      <!-- <div v-else class="products"> -->
-      <div class="products">
+      <div v-else class="products">
+
       <div>
         <h1>Events</h1>
-        <!-- <button @click="$fetch">Refresh</button> -->
+        <button @click="$fetch">Refresh</button>
       </div>
 
-<div :key="index" v-for="(event, index) in (events,paginatedItems)">
-<b-pagination
-          @change="onPageChanged"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          v-model="currentPage"
-        />
 
-        <!-- <ul class="product-list">
-          <li :key="event.id" v-for="event in events" class="product-item"> -->
+    <!-- <b-pagination 
+      :total-rows="totalRows" 
+      v-model="currentPage" 
+      :per-page="perPage" 
+      @input="getData(currentPage)"      
+    ></b-pagination> -->
+<!-- <b-table show-empty :items="events" :current-page="currentPage" :per-page="0"></b-table> -->
+
+<b-pagination
+    :total="length"
+    :current.sync="currentPage"
+    :per-page="perPage"
+  >
+  </b-pagination>
+        <!-- THIS WORKS -->
+        <ul class="product-list">
+          <li :key="event.id" v-for="event in paginatedItems" class="product-item">
+            
             <event
               :isInCart="isInCart(event)"
               v-on:add-to-cart="addToCart(event)"
               :event="event"
             ></event>
-          <!-- </li>
-        </ul> -->
-      </div>
-      
-    </div>
-    
-    </div>
 
+          </li>
+        </ul>
+
+
+
+
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,11 +77,37 @@ export default {
       events: [],
       cart: [],
       currentPage: 1,
-      perPage: 1,
-      totalRows: 10,
-      paginatedItems: this.events
+      perPage: 6,
+      totalRows: this.length,
+      totalEvents: 0,
+      apiLoaded: false
     }
   },
+
+  computed: {
+    length() {
+      if ( !this.apiLoaded ) {
+        return null
+      } else {
+        return this.events.length;
+      }
+    },
+
+    paginatedItems() {
+        let page_number = this.currentPage;
+        return this.events.slice(page_number * this.perPage, (page_number + 1) * this.perPage);
+        
+      }
+
+  },
+
+  async fetch() {
+      this.events = await fetch(
+      `https://api.musement.com/api/v3/venues/164/activities?limit=130&page=${this.currentPage}&offset=0&currency=EUR`
+      ).then(res => res.json());
+  },
+
+
 
   // async asyncData({ $axios }) {
   //   const events = await $axios.$get(`https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR`);
@@ -92,42 +121,28 @@ export default {
   //   return { events, cart: [] };
   // },
 
-  async fetch() {
-    this.events = await fetch(
-      'https://api.musement.com/api/v3/venues/164/activities?&offset=0&currency=EUR'
-    ).then(res => res.json());
-
-  },
-
 
   methods: {
-    paginate(page_size, page_number) {
-            let itemsToParse = this.events;
-            this.paginatedItems = itemsToParse.slice(
-                page_number * page_size,
-                (page_number + 1) * page_size
-            );
-        },
-        onPageChanged(page) {
-            this.paginate(this.perPage, page - 1);
-        },
+    // async fetchData() {
+    //   this.events = await fetch(
+    //   `https://api.musement.com/api/v3/venues/164/activities?page=${this.currentPage}&limit=${this.perPage}&offset=0&currency=EUR`
+    //   ).then(res => {
+    //     this.totalEvents = parseInt(res.headers.get('x-total-count'), 10)
+    //     return res.json()
+    //   })
+    //   .then(events => events)
+    // },
 
-// paginate(page_size, page_number) {
-//       let itemsToParse = this.events;
-//       this.paginatedItems = itemsToParse.slice(
-//         page_number * page_size,
-//         (page_number + 1) * page_size
-//       );
-//     },
-//     onPageChanged(page) {
-//       this.paginate(this.perPage, page - 1);
-//     },
-    
-    // itemsForList() {
-    //   return this.events.slice(
-    //     (this.currentPage - 1) * this.perPage,
-    //     this.currentPage * this.perPage,
-    //   );
+    // paginate(page_size, page_number) {
+    //         let itemsToParse = this.events;
+    //         this.paginatedItems = itemsToParse.slice(
+    //             page_number * page_size,
+    //             (page_number + 1) * page_size
+    //         );
+    //     },
+
+    // onPageChanged(page) {
+    //     this.paginate(this.perPage, page - 1);
     // },
 
     addToCart(event) {
@@ -135,37 +150,36 @@ export default {
     },
 
     isInCart(event) {
-      // const item = this.cart.find(item => item.id === event.id);
       if (this.cart.includes(event)) {
         return true;
       }
       return false;
-    },
-    removeFromCart(item) {
-      // this.cart = this.cart.filter(item => item.id !== event.id);
-      // this.cart.splice(index, 1);
     },
 
     pay() {
       this.cart = [];
       alert("Thanks! Shopping successfully completed. ");
     }
-
-
-        // async getEvents() {
-        //     let res = await this.$store.dispatch("getEvents");
-        //     this.events = res.data.data.events;
-        // },
-
-        // mounted() {
-        //     this.getEvents();
-        // }
    
   },
 
   mounted() {
-    this.paginate(this.perPage, 0);
-  }
+    // this.fetchData().catch(error => {
+    //   console.log(error);
+    // })
+    // this.paginate(this.perPage, 0);
+    this.apiLoaded = true;
+  },
+
+  // watch: {
+  //   currentPage: {
+  //     handler: function(value) {
+  //       this.fetchData().catch(error => {
+  //         console.log(error);
+  //       })
+  //     }
+  //   }
+  // }
 
 
 }

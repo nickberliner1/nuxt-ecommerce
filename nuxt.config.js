@@ -31,7 +31,8 @@ export default {
   modules: [
     '@nuxtjs/axios',
     'nuxt-fontawesome',
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    'nuxt-buefy',
   ],
 
   axios: {

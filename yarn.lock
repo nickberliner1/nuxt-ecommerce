@@ -2649,6 +2649,13 @@
   dependencies:
     "node-int64" "^0.4.0"
 
+"buefy@^0.9.4":
+  "integrity" "sha512-LRSIYVNrKTPQhmNRegASkntX+ObtZ7aSSA/3cybDKXzGtPNy8g8cl2tp79Rl8/LBVH/KkRT5rmmzJ21nxz9IcQ=="
+  "resolved" "https://registry.npmjs.org/buefy/-/buefy-0.9.4.tgz"
+  "version" "0.9.4"
+  dependencies:
+    "bulma" "0.9.1"
+
 "buffer-from@^1.0.0":
   "integrity" "sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A=="
   "resolved" "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.1.tgz"
@@ -2685,6 +2692,11 @@
   "integrity" "sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug="
   "resolved" "https://registry.npmjs.org/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz"
   "version" "3.0.0"
+
+"bulma@0.9.1":
+  "integrity" "sha512-LSF69OumXg2HSKl2+rN0/OEXJy7WFEb681wtBlNS/ulJYR27J3rORHibdXZ6GVb/vyUzzYK/Arjyh56wjbFedA=="
+  "resolved" "https://registry.npmjs.org/bulma/-/bulma-0.9.1.tgz"
+  "version" "0.9.1"
 
 "bytes@3.0.0":
   "integrity" "sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg="
@@ -7078,6 +7090,13 @@
   "resolved" "https://registry.npmjs.org/number-is-nan/-/number-is-nan-1.0.1.tgz"
   "version" "1.0.1"
 
+"nuxt-buefy@^0.4.4":
+  "integrity" "sha512-bV0k3+S1g8+kQLlLXhx7qam0YC4v6KfO5b6KfgmOWuU6Ro0BvSjKUiFvEsbJdCG5eRoxOIohpLLf48SOoFyDcQ=="
+  "resolved" "https://registry.npmjs.org/nuxt-buefy/-/nuxt-buefy-0.4.4.tgz"
+  "version" "0.4.4"
+  dependencies:
+    "buefy" "^0.9.4"
+
 "nuxt-fontawesome@^0.4.0":
   "integrity" "sha512-4oHIot/WLUBFM7o944EQks7WmntD/YsLxZ+g9mJjY9pHw1FJZBaD7Bd+cDsXvl3h/0/f87QwIXf/AA+vOIY0Ag=="
   "resolved" "https://registry.npmjs.org/nuxt-fontawesome/-/nuxt-fontawesome-0.4.0.tgz"
@@ -10320,7 +10339,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2.0.0", "vue@^2.5.18", "vue@^2.6.12", "vue@^2.x", "vue@~2", "vue@2.x":
+"vue@^2.0.0", "vue@^2.5.18", "vue@^2.6.11", "vue@^2.6.12", "vue@^2.x", "vue@~2", "vue@2.x":
   "integrity" "sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.6.12.tgz"
   "version" "2.6.12"
