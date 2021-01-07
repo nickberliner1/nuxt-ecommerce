@@ -23,23 +23,15 @@
         <h1>Events</h1>
         <button @click="$fetch">Refresh</button>
       </div>
-
-
-    <!-- <b-pagination 
-      :total-rows="totalRows" 
-      v-model="currentPage" 
-      :per-page="perPage" 
-      @input="getData(currentPage)"      
-    ></b-pagination> -->
-<!-- <b-table show-empty :items="events" :current-page="currentPage" :per-page="0"></b-table> -->
-
+<div class="pagination">
 <b-pagination
     :total="length"
     :current.sync="currentPage"
     :per-page="perPage"
   >
   </b-pagination>
-        <!-- THIS WORKS -->
+</div>
+
         <ul class="product-list">
           <li :key="event.id" v-for="event in paginatedItems" class="product-item">
             
@@ -52,8 +44,16 @@
           </li>
         </ul>
 
+<div class="pagination">
 
+<b-pagination
+    :total="length"
+    :current.sync="currentPage"
+    :per-page="perPage"
+  >
+  </b-pagination>
 
+</div>
 
 
       </div>
@@ -103,47 +103,11 @@ export default {
 
   async fetch() {
       this.events = await fetch(
-      `https://api.musement.com/api/v3/venues/164/activities?limit=130&page=${this.currentPage}&offset=0&currency=EUR`
+      `https://api.musement.com/api/v3/venues/164/activities?&page=${this.currentPage}&offset=0&currency=EUR`
       ).then(res => res.json());
   },
 
-
-
-  // async asyncData({ $axios }) {
-  //   const events = await $axios.$get(`https://api.musement.com/api/v3/venues/164/activities?limit=6&offset=0&currency=EUR`);
-
-  //   // const sixResults = await fetch()
-  //   //   .limit(6)
-  //   //   .fetch();
-
-  //   // const nextPage = sixResults.length === 6;
-  //   // const results = nextPage ? sixResults.slice(0, -1) : sixResults;
-  //   return { events, cart: [] };
-  // },
-
-
   methods: {
-    // async fetchData() {
-    //   this.events = await fetch(
-    //   `https://api.musement.com/api/v3/venues/164/activities?page=${this.currentPage}&limit=${this.perPage}&offset=0&currency=EUR`
-    //   ).then(res => {
-    //     this.totalEvents = parseInt(res.headers.get('x-total-count'), 10)
-    //     return res.json()
-    //   })
-    //   .then(events => events)
-    // },
-
-    // paginate(page_size, page_number) {
-    //         let itemsToParse = this.events;
-    //         this.paginatedItems = itemsToParse.slice(
-    //             page_number * page_size,
-    //             (page_number + 1) * page_size
-    //         );
-    //     },
-
-    // onPageChanged(page) {
-    //     this.paginate(this.perPage, page - 1);
-    // },
 
     addToCart(event) {
       this.cart.push(event);
@@ -164,23 +128,8 @@ export default {
   },
 
   mounted() {
-    // this.fetchData().catch(error => {
-    //   console.log(error);
-    // })
-    // this.paginate(this.perPage, 0);
     this.apiLoaded = true;
   },
-
-  // watch: {
-  //   currentPage: {
-  //     handler: function(value) {
-  //       this.fetchData().catch(error => {
-  //         console.log(error);
-  //       })
-  //     }
-  //   }
-  // }
-
 
 }
 </script>
@@ -194,10 +143,6 @@ ul, li {
   margin-bottom: 50px;
 }
 
-// .main-body {
-//   display: flex;
-//   justify-content: space-evenly;
-// }
 .header {
   min-height: 100px;
   display: flex;
@@ -231,8 +176,9 @@ ul, li {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.151);
 }
 
-.cart {
-
+.pagination {
+    display: flex;
+    justify-content: space-evenly;
 }
 
 </style>
