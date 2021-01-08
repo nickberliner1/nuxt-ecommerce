@@ -3,8 +3,10 @@
 
   <div class="container">
     <div class="header">
-        <logo>
-        </logo>
+		
+		<logo class="logo">
+		</logo>
+		
         <cart 
           v-on:pay="pay()" 
           v-on:remove-from-cart="removeFromCart(event)"
@@ -20,22 +22,22 @@
 		<div v-else class="products">
 
 			<div>
-				<h1>Events</h1>
-				<!-- <button @click="$fetch">Refresh</button> -->
-				<b-button 
-					@click="$fetch"
-				>
-					<span>Refresh</span>
-				</b-button>
-
-				<div class="toggle-box">
+				<div class="refresh">
+					<h1>Events</h1>
+					<b-button 
+						@click="$fetch"
+					>
+						<span>Refresh</span>
+					</b-button>
+				</div>
+				<!-- <div class="toggle-box">
 					<h3>EN</h3>
 					<label class="label toggle">
 						<input type="checkbox" class="toggle_input" @click="$fetch" @input="changeItalian()" />
 						<div class="toggle-control"></div>
 					</label>
 					<h3>IT</h3>
-				</div>
+				</div> -->
 
 				<div class="pagination">
 					<b-pagination
@@ -159,53 +161,49 @@ export default {
 
 
 <style lang="scss">
-$color_checkbox_success:#4cd964;
-$color_checkbox_default:#8E8E93;
-$transition: .3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
-$width: 4em;
-$height: $width/2;
+// $color_checkbox_success:#4cd964;
+// $color_checkbox_default:#8E8E93;
+// $transition: .3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+// $width: 4em;
+// $height: $width/2;
 
-.toggle{
+// .toggle{
   
-   .toggle-control{
-     transition: $transition;
-      width: $width;
-      height: $height;
-      display: block;
-     border: 2px solid $color_checkbox_default;
-     border-radius: $height;
-     background-color: rgba(black,.06);
-     position: relative;
-     &:after{
-       transition: $transition;
-       content: "";
-       width: $width/2;
-       height: $height;
-       display: block;
-       background-color: #fff;
-       border-radius: 50%;
-       box-shadow: 0 1px 2px rgba(black, .4),0 3px 2px rgba(black,.4);
-       position: absolute;
-       top: 0;
-       left: 0;
-     }
-   }
+//    .toggle-control{
+//      transition: $transition;
+//       width: $width;
+//       height: $height;
+//       display: block;
+//      border: 2px solid $color_checkbox_default;
+//      border-radius: $height;
+//      background-color: rgba(black,.06);
+//      position: relative;
+//      &:after{
+//        transition: $transition;
+//        content: "";
+//        width: $width/2;
+//        height: $height;
+//        display: block;
+//        background-color: #fff;
+//        border-radius: 50%;
+//        box-shadow: 0 1px 2px rgba(black, .4),0 3px 2px rgba(black,.4);
+//        position: absolute;
+//        top: 0;
+//        left: 0;
+//      }
+//    }
    
-  input{
-    display: none;
-    &:checked + .toggle-control{
-      border-color: $color_checkbox_success;
-      background-color: $color_checkbox_success;
-      &:after{
-        left: $width/2;
-      }
-    }
-  }
-}
-  
-  .toggle_input{
-   
-  }
+//   input{
+//     display: none;
+//     &:checked + .toggle-control{
+//       border-color: $color_checkbox_success;
+//       background-color: $color_checkbox_success;
+//       &:after{
+//         left: $width/2;
+//       }
+//     }
+//   }
+// }
 
 body {
 	background-color: #292929;
@@ -229,10 +227,24 @@ ul, li {
   min-height: 100px;
   display: flex;
   justify-content: space-between;
-  background-color: rgb(199, 199, 219);
+  
 }
 
+.refresh {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	h1 {
+		margin-right: 20px;
+		font-size: 3em;
+	}
+}
+
+
 .product-list {
+	margin-top: 0;
   display: flex;
   flex-wrap: wrap;
   padding-right: 5vw;

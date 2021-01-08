@@ -1,6 +1,13 @@
 <template>
     <div class="cart">
-        <h5>€ {{ total }}</h5>
+         <b-button
+                class="pay"
+                :hidden="items.length === 0"
+                @click="$emit('pay')"
+            ><h4>Pay Now</h4></b-button>
+            <div class="total">
+                <h5>Total: € {{ total }}</h5>
+            </div>
         <ul class="dropdown">
             <li v-for="(item, index) in items" :key="item.id" class="cart-item">
                 {{ item.title }} - {{ item.retail_price.formatted_value }}
@@ -11,14 +18,7 @@
                 ></b-button>
             </li>
         </ul>
-        <!-- <div>
-            <h5>€ {{ total }}</h5>
-        </div> -->
-        <b-button
-            type="is-success"
-            :disabled="items.length === 0"
-            @click="$emit('pay')"
-        >Pay Now</b-button>
+        
     </div>
 </template>
 
@@ -35,26 +35,49 @@ export default {
 
 <style lang="scss">
 
+
+
 h5 {
-  background-color: #4CAF50;
+  background-color: #4caf4f;
   color: white;
-  padding: 16px;
+  padding: 15px;
+  margin-top: 20px;
   font-size: 16px;
   border: none;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.pay {
+    padding: 16px;
+    margin: 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #009fe3;
+    border: none;
+    border-radius: 15px;
+   
+}
+
 
 .cart {
   position: relative;
-  display: inline-block;
+  display: flex;
+  
+//   display: flex;
+//   align-items: flex-start;
 }
 
 .dropdown {
   display: none;
   position: absolute;
-  background-color: #f1f1f1;
+  background-color: none;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-top: 100px;
   z-index: 1;
+  
 }
 
 .dropdown li {
@@ -62,9 +85,18 @@ h5 {
   padding: 12px 16px;
   text-decoration: none;
   display: block;
+    margin-top: 10px;
+    background-color: #ddd;
+   
+
 }
 
-.dropdown li:hover {background-color: #ddd;}
+.cart-item {
+    border-radius: 20px;
+    margin: 0px;
+}
+
+.dropdown li:hover {background-color: white;}
 
 .cart:hover .dropdown {display: block;}
 
