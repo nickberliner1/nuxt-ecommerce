@@ -24,9 +24,7 @@
 			<div>
 				<div class="refresh">
 					<h1>Events</h1>
-					<b-button 
-						@click="$fetch"
-					>
+					<b-button @click="$fetch">
 						<span>Refresh</span>
 					</b-button>
 				</div>
@@ -66,8 +64,7 @@
 				:total="length"
 				:current.sync="currentPage"
 				:per-page="perPage"
-			>
-			</b-pagination>
+			></b-pagination>
 		</div>
 
 

@@ -1,10 +1,13 @@
 <template>
     <div class="cart">
          <b-button
-                class="pay"
-                :hidden="items.length === 0"
-                @click="$emit('pay')"
-            ><h4>Pay Now</h4></b-button>
+            v-if="typeof items !== 'undefined' 
+            && typeof items === 'object'"
+            class="pay"
+            :hidden="items.length === 0"
+            @click="$emit('pay')"
+        ><h4>Pay Now</h4>
+        </b-button>
             <div class="total">
                 <h5>Total: € {{ total }}</h5>
             </div>
@@ -27,15 +30,15 @@ export default {
     props: ["items"],
     computed: {
         total() {
-            return this.items.reduce((i, item) => i + Number(item.retail_price.value), 0);
+            if ( this.items ) {
+                return this.items.reduce((i, item) => i + Number(item.retail_price.value), 0);
+            }
         }
     }
 }
 </script>
 
 <style lang="scss">
-
-
 
 h5 {
   background-color: #4caf4f;
