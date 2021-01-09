@@ -33,7 +33,7 @@ export default {
     'nuxt-fontawesome',
     'bootstrap-vue/nuxt',
     'nuxt-buefy',
-    '@nuxtjs/vuetify',
+    
   ],
 
   axios: {

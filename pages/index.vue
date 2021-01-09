@@ -23,18 +23,25 @@
 			<div class="products">
 
 			<div>
-				<div class="refresh">
-					<h1>Events</h1>
+				<div class="title">
+					<h2>Events</h2>
 					
 					<div class="toggle-box">
 					
 					<label class="label toggle">
+						<h3>EN</h3>
 						<input 
 							type="checkbox" 
 							class="toggle_input" 
 							@click="italian = !italian" 
 						/>
-						<div class="toggle-control"></div>
+						
+
+						<div class="toggle-control">
+							<h4>🇬🇧</h4>
+							<h4>🇮🇹</h4>
+						</div>
+						<h3>IT</h3>
 					</label>
 					
 				</div>
@@ -104,23 +111,6 @@ export default {
 	  italian: true
     }
   },
-
-//   async fetch() {
-//       this.events = await fetch(
-// 	  `https://api.musement.com/api/v3/venues/164/activities?&page=${this.currentPage}&offset=0`,
-// 	  {
-// 		  "method": "GET",
-// 		  "headers": {
-// 			  "content-type": "application/json",
-// 			  "accept-language": `${this.italian ? 'it' : 'en'}`,
-// 			  "x-musement-currency": "EUR",
-// 		  }
-// 	  }
-// 	  ).then(res => res.json())
-// 	  .catch(error => {
-// 		  console.log(error);
-// 	  });
-//   },
 
   computed: {
     length() {
@@ -209,21 +199,30 @@ export default {
 
 <style lang="scss">
 $color_checkbox_success:#4cd964;
-$color_checkbox_default:#8E8E93;
+$color_checkbox_default:#c54de9;
 $transition: .3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
 $width: 4em;
 $height: $width/2;
 
-.toggle{
+.label {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		align-items: space-evenly;
+	}
+.toggle {
   
-   .toggle-control{
+   	.toggle-control{
      transition: $transition;
       width: $width;
       height: $height;
-      display: block;
-     border: 2px solid $color_checkbox_default;
+      display: flex;
+	  justify-content: space-evenly;
+	  align-items: center;
+	border: none;
+
      border-radius: $height;
-     background-color: rgba(black,.06);
+     background-color: $color_checkbox_default;
      position: relative;
      &:after{
        transition: $transition;
@@ -256,7 +255,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: #292929;
-	width: 100%;
+	height: 100%;
 }
 
 h1, h2, p {
@@ -280,15 +279,22 @@ ul, li {
   
 }
 
-.refresh {
+.title {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: baseline;
 
-	h1 {
+	h3 {
 		margin-right: 20px;
-		font-size: 3em;
+		margin-left: 20px;
+		color: rgb(223, 223, 223);
+		margin-bottom: 20px;
+	}
+
+	label {
+		display: flex;
+		align-items: baseline;
 	}
 }
 
