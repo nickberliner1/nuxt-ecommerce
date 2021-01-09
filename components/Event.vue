@@ -1,5 +1,8 @@
 <template>
-    <div class="product">
+
+
+
+		<div class="product">
         
           <img :src="event.cover_image_url" class="product-image" />
           <h2 class="product-title">{{ event.title }}</h2>
@@ -25,15 +28,19 @@
 </template>
 
 <script>
+
 export default {
-    props: ['event', 'isInCart'],
+    
+    props: ['event', 'price', 'isInCart'],
     data() {
         return {
-            events: []
+            events: [],
+            // price: this.event.retail_price.formatted_value
         }
     },
     
 }
+
 </script>
 
 <style lang="scss">

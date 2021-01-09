@@ -16,26 +16,30 @@
 
     <div class="main-body">
       
-		<p v-if="$fetchState.pending">Loading events...</p>
+		<!-- <p v-if="$fetchState.pending">Loading events...</p>
 		<p v-else-if="$fetchState.error">An error occurred :(</p>
 
-		<div v-else class="products">
+		<div v-else class="products"> -->
+			<div class="products">
 
 			<div>
 				<div class="refresh">
 					<h1>Events</h1>
-					<b-button @click="$fetch">
-						<span>Refresh</span>
-					</b-button>
-				</div>
-				<!-- <div class="toggle-box">
-					<h3>EN</h3>
+					
+					<div class="toggle-box">
+					
 					<label class="label toggle">
-						<input type="checkbox" class="toggle_input" @click="$fetch" @input="changeItalian()" />
+						<input 
+							type="checkbox" 
+							class="toggle_input" 
+							@click="italian = !italian" 
+						/>
 						<div class="toggle-control"></div>
 					</label>
-					<h3>IT</h3>
-				</div> -->
+					
+				</div>
+				</div>
+				
 
 				<div class="pagination">
 					<b-pagination
@@ -49,7 +53,7 @@
 
 			
 
-			<ul class="product-list">
+			<ul v-if="this.apiLoaded" class="product-list">
 				<li :key="event.id" v-for="event in paginatedItems" class="product-item">          
 					<event
 					:isInCart="isInCart(event)"
@@ -61,6 +65,7 @@
 
 		<div class="pagination">
 			<b-pagination
+				rounded
 				:total="length"
 				:current.sync="currentPage"
 				:per-page="perPage"
@@ -77,12 +82,15 @@
 import Logo from '../components/Logo.vue';
 import Cart from '../components/Cart.vue';
 import Event from '../components/Event.vue';
+import { pagination } from 'buefy';
+import axios from '@nuxtjs/axios';
 
 export default {
   components: { 
     Logo,
     Event, 
-    Cart 
+	Cart,
+	pagination
   },
   data() {
     return {
@@ -92,9 +100,27 @@ export default {
       perPage: 6,
       totalRows: this.length,
 	  totalEvents: 0,
-      apiLoaded: false
+	  apiLoaded: false,
+	  italian: true
     }
   },
+
+//   async fetch() {
+//       this.events = await fetch(
+// 	  `https://api.musement.com/api/v3/venues/164/activities?&page=${this.currentPage}&offset=0`,
+// 	  {
+// 		  "method": "GET",
+// 		  "headers": {
+// 			  "content-type": "application/json",
+// 			  "accept-language": `${this.italian ? 'it' : 'en'}`,
+// 			  "x-musement-currency": "EUR",
+// 		  }
+// 	  }
+// 	  ).then(res => res.json())
+// 	  .catch(error => {
+// 		  console.log(error);
+// 	  });
+//   },
 
   computed: {
     length() {
@@ -115,21 +141,38 @@ export default {
 
   },
 
-  async fetch() {
+//   async asyncData({ $axios }) {
+// 	  const events = await $axios.$get(`https://api.musement.com/api/v3/venues/164/activities?&page=${currentPage}&offset=0`)
+// 	  .catch((error) => {
+// 			console.error(error.response);
+// 			if ( error.message === "Network Error" ) {
+// 				this.alert.show = 1;
+// 				this.alert.message = error.message + ': Please try again later';
+// 			}
+// 		});
+// 	  return {
+// 		  events
+// 	  }
+//   },
+
+  methods: {
+
+	async fetchData() {
       this.events = await fetch(
 	  `https://api.musement.com/api/v3/venues/164/activities?&page=${this.currentPage}&offset=0`,
 	  {
 		  "method": "GET",
 		  "headers": {
 			  "content-type": "application/json",
-			  "accept-language": "it",
+			  "accept-language": `${this.italian ? 'it' : 'en'}`,
 			  "x-musement-currency": "EUR",
 		  }
 	  }
-      ).then(res => res.json());
+	  ).then(res => res.json())
+	  .catch(error => {
+		  console.log(error);
+	  });
   },
-
-  methods: {
 
     addToCart(event) {
       this.cart.push(event);
@@ -149,61 +192,71 @@ export default {
    
   },
 
-  mounted() {
-    this.apiLoaded = true;
+  watch: {
+	  italian() {
+		  this.fetchData();
+	  }
   },
 
+  mounted() {
+	  this.fetchData();
+	  this.apiLoaded = !this.apiLoaded;	
+  },
+  
 }
 </script>
 
 
 <style lang="scss">
-// $color_checkbox_success:#4cd964;
-// $color_checkbox_default:#8E8E93;
-// $transition: .3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
-// $width: 4em;
-// $height: $width/2;
+$color_checkbox_success:#4cd964;
+$color_checkbox_default:#8E8E93;
+$transition: .3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+$width: 4em;
+$height: $width/2;
 
-// .toggle{
+.toggle{
   
-//    .toggle-control{
-//      transition: $transition;
-//       width: $width;
-//       height: $height;
-//       display: block;
-//      border: 2px solid $color_checkbox_default;
-//      border-radius: $height;
-//      background-color: rgba(black,.06);
-//      position: relative;
-//      &:after{
-//        transition: $transition;
-//        content: "";
-//        width: $width/2;
-//        height: $height;
-//        display: block;
-//        background-color: #fff;
-//        border-radius: 50%;
-//        box-shadow: 0 1px 2px rgba(black, .4),0 3px 2px rgba(black,.4);
-//        position: absolute;
-//        top: 0;
-//        left: 0;
-//      }
-//    }
+   .toggle-control{
+     transition: $transition;
+      width: $width;
+      height: $height;
+      display: block;
+     border: 2px solid $color_checkbox_default;
+     border-radius: $height;
+     background-color: rgba(black,.06);
+     position: relative;
+     &:after{
+       transition: $transition;
+       content: "";
+       width: $width/2;
+       height: $height;
+       display: block;
+       background-color: #fff;
+       border-radius: 50%;
+       box-shadow: 0 1px 2px rgba(black, .4),0 3px 2px rgba(black,.4);
+       position: absolute;
+       top: 0;
+       left: 0;
+     }
+   }
    
-//   input{
-//     display: none;
-//     &:checked + .toggle-control{
-//       border-color: $color_checkbox_success;
-//       background-color: $color_checkbox_success;
-//       &:after{
-//         left: $width/2;
-//       }
-//     }
-//   }
-// }
+  input{
+    display: none;
+    &:checked + .toggle-control{
+      border-color: $color_checkbox_success;
+      background-color: $color_checkbox_success;
+      &:after{
+        left: $width/2;
+      }
+    }
+  }
+}
 
 body {
+	margin: 0;
+	padding: 0;
 	background-color: #292929;
+	width: 100%;
 }
 
 h1, h2, p {
@@ -272,6 +325,7 @@ ul, li {
 .pagination {
     display: flex;
     justify-content: space-evenly;
+	margin: -2rem;
 }
 
 

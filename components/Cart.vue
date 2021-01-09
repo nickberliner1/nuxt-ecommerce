@@ -68,7 +68,6 @@ h5 {
 .cart {
   position: relative;
   display: flex;
-  
 //   display: flex;
 //   align-items: flex-start;
 }
@@ -80,6 +79,8 @@ h5 {
   min-width: 160px;
   margin-top: 100px;
   z-index: 1;
+  max-height: 400px;
+  overflow: scroll;
   
 }
 
@@ -90,6 +91,7 @@ h5 {
   display: block;
     margin-top: 10px;
     background-color: #ddd;
+    
    
 
 }

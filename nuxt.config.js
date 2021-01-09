@@ -33,6 +33,7 @@ export default {
     'nuxt-fontawesome',
     'bootstrap-vue/nuxt',
     'nuxt-buefy',
+    '@nuxtjs/vuetify',
   ],
 
   axios: {
@@ -44,9 +45,7 @@ export default {
     
   },
 
-  proxy: {
-    '/api/': process.env.API_URL,
-  },
+  
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {

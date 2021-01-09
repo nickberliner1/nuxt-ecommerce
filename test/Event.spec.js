@@ -1,12 +1,41 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, mount } from "@vue/test-utils";
 import Event from "../components/Event.vue";
 
 describe('Event', () => {
-    test('is a Vue instance', () => {
-      const wrapper = shallowMount(Event)
-      expect(wrapper.vm).toBeTruthy()
+    it('Returns products from API', () => {
+        const wrapper = mount(Event, {
+            propsData: {
+                event: ['Rome'],
+                price: ['24']
+
+            }
+        })
+        expect(wrapper.text()).toContain('Add to Cart')
     })
-  })
+})
+
+// describe('Event', () => {
+//     test('is a Vue instance', () => {
+//       const wrapper = shallowMount(Event), {
+//           propsData: {
+//               event:
+//             }
+//       }
+//       expect(wrapper.vm).toBeTruthy()
+//     })
+//   })
+
+// describe('Event', () => {
+//     it('renders each product retrieved from the API', () => {
+//         const wrapper = shallowMount(Event, {
+//             data() {
+//                 return {
+//                     events: []
+//                 }
+//             }
+//         })
+//     })
+//   })
 
 // // const factory = () => {
 // //   return shallowMount(Event, {
