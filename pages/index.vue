@@ -199,7 +199,7 @@ export default {
 
 <style lang="scss">
 $color_checkbox_success:#4cd964;
-$color_checkbox_default:#c54de9;
+$color_checkbox_default:#7957d5;
 $transition: .3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
 $width: 4em;
 $height: $width/2;
