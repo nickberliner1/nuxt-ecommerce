@@ -8,9 +8,10 @@
 		</logo>
 		
         <cart 
-          v-on:pay="pay()" 
-          v-on:remove-from-cart="removeFromCart(event)"
-          :items="cart"
+			:italian="italian"
+			v-on:pay="pay()" 
+			v-on:remove-from-cart="removeFromCart(event)"
+			:items="cart"
         ></cart>
     </div>
 
@@ -29,7 +30,7 @@
 					<div class="toggle-box">
 					
 					<label class="label toggle">
-						<h3>EN</h3>
+						<h3>IT</h3>
 						<input 
 							type="checkbox" 
 							class="toggle_input" 
@@ -38,11 +39,24 @@
 						
 
 						<div class="toggle-control">
-							<h4>🇬🇧</h4>
 							<h4>🇮🇹</h4>
+							<h4>🇬🇧</h4>
 						</div>
-						<h3>IT</h3>
+						<h3>EN</h3>
+						<div class="info">
+							<b-icon
+								class="info-mark"
+								icon="help"
+							></b-icon>
+							<span class="info-text">
+								{{`${italian 
+								? "Alcuni eventi potrebbero non essere disponibili in inglese"
+								: "Notice that some events may not be available in English"
+								}`}}
+							</span>
+						</div>
 					</label>
+						
 					
 				</div>
 				</div>
@@ -63,6 +77,7 @@
 			<ul v-if="this.apiLoaded" class="product-list">
 				<li :key="event.id" v-for="event in paginatedItems" class="product-item">          
 					<event
+					:italian="italian"
 					:isInCart="isInCart(event)"
 					v-on:add-to-cart="addToCart(event)"
 					:event="event"
@@ -89,7 +104,6 @@
 import Logo from '../components/Logo.vue';
 import Cart from '../components/Cart.vue';
 import Event from '../components/Event.vue';
-import { pagination } from 'buefy';
 import axios from '@nuxtjs/axios';
 
 export default {
@@ -97,7 +111,6 @@ export default {
     Logo,
     Event, 
 	Cart,
-	pagination
   },
   data() {
     return {
@@ -131,20 +144,6 @@ export default {
 
   },
 
-//   async asyncData({ $axios }) {
-// 	  const events = await $axios.$get(`https://api.musement.com/api/v3/venues/164/activities?&page=${currentPage}&offset=0`)
-// 	  .catch((error) => {
-// 			console.error(error.response);
-// 			if ( error.message === "Network Error" ) {
-// 				this.alert.show = 1;
-// 				this.alert.message = error.message + ': Please try again later';
-// 			}
-// 		});
-// 	  return {
-// 		  events
-// 	  }
-//   },
-
   methods: {
 
 	async fetchData() {
@@ -154,8 +153,8 @@ export default {
 		  "method": "GET",
 		  "headers": {
 			  "content-type": "application/json",
-			  "accept-language": `${this.italian ? 'it' : 'en'}`,
-			  "x-musement-currency": "EUR",
+			  "accept-language": `${this.italian ? 'it' : 'en-GB'}`,
+			  "x-musement-currency": `${this.italian ? 'EUR' : 'GBP'}`,
 		  }
 	  }
 	  ).then(res => res.json())
@@ -185,6 +184,7 @@ export default {
   watch: {
 	  italian() {
 		  this.fetchData();
+		  this.cart = [];
 	  }
   },
 
@@ -202,54 +202,80 @@ $color_checkbox_success:#4cd964;
 $color_checkbox_default:#7957d5;
 $transition: .3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
 $width: 4em;
-$height: $width/2;
+$height: $width / 2;
 
 .label {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-evenly;
-		align-items: space-evenly;
-	}
-.toggle {
-  
-   	.toggle-control{
-     transition: $transition;
-      width: $width;
-      height: $height;
-      display: flex;
-	  justify-content: space-evenly;
-	  align-items: center;
-	border: none;
-
-     border-radius: $height;
-     background-color: $color_checkbox_default;
-     position: relative;
-     &:after{
-       transition: $transition;
-       content: "";
-       width: $width/2;
-       height: $height;
-       display: block;
-       background-color: #fff;
-       border-radius: 50%;
-       box-shadow: 0 1px 2px rgba(black, .4),0 3px 2px rgba(black,.4);
-       position: absolute;
-       top: 0;
-       left: 0;
-     }
-   }
-   
-  input{
-    display: none;
-    &:checked + .toggle-control{
-      border-color: $color_checkbox_success;
-      background-color: $color_checkbox_success;
-      &:after{
-        left: $width/2;
-      }
-    }
-  }
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: space-evenly;
+	cursor: pointer;
 }
+
+	.toggle {
+	
+		.toggle-control {
+			transition: $transition;
+			width: $width;
+			height: $height;
+			display: flex;
+			justify-content: space-evenly;
+			align-items: center;
+			border: none;
+			border-radius: $height;
+			background-color: $color_checkbox_default;
+			position: relative;
+			&:after {
+			transition: $transition;
+			content: "";
+			width: $width / 2;
+			height: $height;
+			display: block;
+			background-color: #fff;
+			border-radius: 50%;
+			box-shadow: 0 1px 2px rgba(black, .4),0 3px 2px rgba(black, .4);
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
+   
+	input {
+		display: none;
+		&:checked + .toggle-control {
+			border-color: $color_checkbox_success;
+			background-color: $color_checkbox_success;
+			&:after {
+				left: $width / 2;
+			}
+		}
+	}
+}
+
+.info {
+	z-index: 10;
+}
+
+.info-mark {
+	color: rgb(219, 219, 219);
+}
+	.info-text {
+		display: none;
+		width: 120px;
+		background-color: rgb(209, 209, 209);
+		text-align: center;
+		border-radius: 6px;
+		padding: 15px;
+		position: absolute;
+		z-index: 20;
+	}
+
+
+.info:hover .info-text {
+		cursor: pointer;
+		display: inline;
+	}
+
 
 body {
 	margin: 0;
@@ -263,9 +289,9 @@ h1, h2, p {
 }
 
 ul, li {
-  list-style-type: none;
-  margin-top: 50px;
-  margin-bottom: 50px;
+	list-style-type: none;
+	margin-top: 50px;
+	margin-bottom: 50px;
 }
 
 .pagination-link {
@@ -273,10 +299,10 @@ ul, li {
 }
 
 .header {
-  min-height: 100px;
-  display: flex;
-  justify-content: space-between;
-  
+	min-height: 100px;
+	display: flex;
+	justify-content: space-between;
+	
 }
 
 .title {
@@ -289,7 +315,7 @@ ul, li {
 		margin-right: 20px;
 		margin-left: 20px;
 		color: rgb(223, 223, 223);
-		margin-bottom: 20px;
+		margin: 20px;
 	}
 
 	label {
@@ -301,19 +327,19 @@ ul, li {
 
 .product-list {
 	margin-top: 0;
-  display: flex;
-  flex-wrap: wrap;
-  padding-right: 5vw;
-  padding-left: 5vw;
+	display: flex;
+	flex-wrap: wrap;
+	padding-right: 5vw;
+	padding-left: 5vw;
 }  
 
 .product-image {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 15px;
-  border: 0.5px solid rgb(199, 199, 199);
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 15px;
+	border: 0.5px solid rgb(199, 199, 199);
 }
 
 .product-item {
@@ -322,7 +348,7 @@ ul, li {
     padding: 20px;
     margin: 20px;
 	min-width: 400px;
-	background-color: #121212;
+	background-color: #1d1d1d;
     border: 1px solid gray;
     border-radius: 15px;
     box-shadow: 5px 5px 10px rgba(145, 145, 145, 0.151);
@@ -331,7 +357,7 @@ ul, li {
 .pagination {
     display: flex;
     justify-content: space-evenly;
-	margin: -2rem;
+	margin: -3rem;
 }
 
 

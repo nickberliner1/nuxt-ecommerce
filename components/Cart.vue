@@ -1,24 +1,38 @@
 <template>
+
+<!-- Depending on language preferences, pricing and language changes -->
+
     <div class="cart">
-         <b-button
+<!-- Button that allows you to pay if there are items in your cart -->
+        <b-button
             v-if="typeof items !== 'undefined' 
             && typeof items === 'object'"
             class="pay"
             :hidden="items.length === 0"
             @click="$emit('pay')"
-        ><h4>Pay Now</h4>
+        >
+            <h4>{{ `${italian ? 'Pagare' : 'Pay'}` }}</h4>
         </b-button>
+
+<!-- Button that show you the total
+    And on hover, shows the list of items you have added -->
             <div class="total">
-                <h5>Total: € {{ total }}</h5>
+                <h5>{{ `${italian ? "Totale: € " : "Total: £ "}` + total }}</h5>
             </div>
+
+
         <ul class="dropdown">
             <li v-for="(item, index) in items" :key="item.id" class="cart-item">
-                {{ item.title }} - {{ item.retail_price.formatted_value }}
+                {{ item.title }} - {{ `${italian ? '€' : '£'}` + item.retail_price.value }}
+                
+                
+    <!-- Button that allows you to remove items from your cart -->
                 <b-button 
                     @click="items.splice(index, 1)"
                     type="is-danger"
                     icon-left="delete"
                 ></b-button>
+
             </li>
         </ul>
         
@@ -27,7 +41,7 @@
 
 <script>
 export default {
-    props: ["items"],
+    props: ['items', 'italian'],
     computed: {
         total() {
             if ( this.items ) {

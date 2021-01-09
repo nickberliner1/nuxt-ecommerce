@@ -18,7 +18,13 @@
                 :disabled="isInCart"
                 @click="$emit('add-to-cart', event)"
               >
-              {{ isInCart ? 'Added' : 'Add to Cart' }}
+                   
+
+                {{
+                    italian 
+                    ? (isInCart ? 'Aggiunto' : 'Aggiungi')
+                    : (isInCart ? 'Added' : 'Add to Cart')
+                }}
               </b-button>
             </div>
           </div>
@@ -31,7 +37,7 @@
 
 export default {
     
-    props: ['event', 'price', 'isInCart'],
+    props: ['event', 'italian', 'isInCart'],
     data() {
         return {
             events: [],
