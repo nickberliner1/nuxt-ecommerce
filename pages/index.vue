@@ -16,11 +16,7 @@
     </div>
 
     <div class="main-body">
-      
-		<!-- <p v-if="$fetchState.pending">Loading events...</p>
-		<p v-else-if="$fetchState.error">An error occurred :(</p>
-
-		<div v-else class="products"> -->
+ 
 			<div class="products">
 
 			<div>
@@ -127,20 +123,20 @@ export default {
 
   computed: {
     length() {
-      if ( !this.apiLoaded ) {
-        return null
-      } else {
-        return this.events.length;
-      }
+		// Makes sure API has loaded before finding return the amount of events retrieved
+		if ( !this.apiLoaded ) {
+			return null
+		} else {
+			return this.events.length;
+		}
     },
 
     paginatedItems() {
-        let pageNumber = this.currentPage;
+		let pageNumber = this.currentPage;
 		return this.events.slice(
 				pageNumber * this.perPage, 
 				(pageNumber + 1) * this.perPage);
-        
-      }
+	}
 
   },
 
@@ -183,6 +179,7 @@ export default {
 
   watch: {
 	  italian() {
+		  // Re-fetches API and empties cart when language changes
 		  this.fetchData();
 		  this.cart = [];
 	  }

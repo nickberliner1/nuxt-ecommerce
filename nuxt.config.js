@@ -39,10 +39,6 @@ export default {
   axios: {
     proxy: true,
     
-      // See https://github.com/nuxt-community/axios-module#options
-      // baseURL: process.env.API_URL,
-      // baseURL: 'https://api.musement.com/api/v3/venues/164',
-    
   },
 
   

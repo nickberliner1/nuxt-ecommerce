@@ -42,6 +42,7 @@
 <script>
 export default {
     props: ['items', 'italian'],
+
     computed: {
         total() {
             if ( this.items ) {
@@ -82,8 +83,7 @@ h5 {
 .cart {
   position: relative;
   display: flex;
-//   display: flex;
-//   align-items: flex-start;
+
 }
 
 .dropdown {
